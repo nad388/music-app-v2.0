@@ -7,6 +7,9 @@ import styles from './Playbar.module.scss'
 
 const TimeControls = () => {
 	const { audio, currentTrack } = useContext(AudioContext)
+	if (!currentTrack) {
+		return null
+	}
 	const { duration } = currentTrack
 	const [currentTime, setCurrentTime] = useState(0)
 	const formattedCurrentTime = secondsToMMSS(currentTime)
