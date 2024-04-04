@@ -12,7 +12,9 @@ interface IAudioContext {
 	audio: HTMLAudioElement
 	currentTrack: ITrack | null
 	isPlaying: boolean
+	volume: number
 	handleToggleAudio: (track: ITrack) => void
+	handleVolumeChange: (newVolume: number) => void
 }
 
 const audio = new Audio()
@@ -26,6 +28,7 @@ const AudioProvider = ({ children }: PropsWithChildren<{}>) => {
 	const [currentTrack, setCurrentTrack] = useState<ITrack | null>(null)
 	const [isPlaying, setIsPlaying] = useState(false)
 	const [isTrackPlaying, setIsTrackPlaying] = useState(false)
+	const [volume, setVolume] = useState(0.5) // Initial volume at 50%
 
 	useEffect(() => {
 		const fetchTracks = async () => {
@@ -59,9 +62,15 @@ const AudioProvider = ({ children }: PropsWithChildren<{}>) => {
 			setCurrentTrack(currentTrack)
 			setIsTrackPlaying(true)
 			audio.src = currentTrack.src
+			audio.volume = volume
 			audio.play()
 		}
-	}, [currentTrack, isPlaying, isTrackPlaying])
+	}, [currentTrack, isPlaying, isTrackPlaying, volume])
+
+	const handleVolumeChange = (newVolume: number) => {
+		setVolume(newVolume)
+		audio.volume = newVolume // Update audio volume
+	}
 
 	const handleToggleAudio = (track: ITrack) => {
 		if (!currentTrack || currentTrack.id !== track.id) {
@@ -81,12 +90,25 @@ const AudioProvider = ({ children }: PropsWithChildren<{}>) => {
 			setIsPlaying(true)
 		}
 	}
+
+
 	const value = {
 		audio,
 		currentTrack,
 		isPlaying,
 		handleToggleAudio,
+		volume,
+		handleVolumeChange,
+
 	}
-	return <AudioContext.Provider value={value}>{children}</AudioContext.Provider>
+
+
+
+	return (
+		<AudioContext.Provider value={value}>
+			{children}
+			{/* <VolumeControl onVolumeChange={handleVolumeChange} /> */}
+		</AudioContext.Provider>
+	)
 }
 export default AudioProvider

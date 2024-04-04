@@ -4,6 +4,7 @@ import { BsFillPlayFill, BsPauseFill } from 'react-icons/bs'
 import { AudioContext } from '../../context/AudioContext'
 import secondsToMMSS from '../../utils/secondsToMMSS'
 import styles from './Playbar.module.scss'
+import VolumeControl from './VolumeControl'
 
 const TimeControls = () => {
 	const { audio, currentTrack } = useContext(AudioContext)
@@ -59,10 +60,20 @@ const Playbar: FC = () => {
 			<IconButton onClick={() => handleToggleAudio(currentTrack)}>
 				{isPlaying ? <BsPauseFill /> : <BsFillPlayFill />}
 			</IconButton>
+
 			<div className={styles.credits}>
 				<h4>{title}</h4>
 				<p>{artists}</p>
 			</div>
+			<div>
+				{/* <Stack spacing={2} direction='row' sx={{ mb: 0 }} alignItems='center'>
+					<BsVolumeDown size={60} />
+					<Slider aria-label='Volume' />
+					<BsVolumeUp size={60} />
+				</Stack> */}
+				<VolumeControl />
+			</div>
+
 			<div className={styles.slider}>
 				<TimeControls />
 				<p>{formattedDuration}</p>
