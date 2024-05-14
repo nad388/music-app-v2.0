@@ -13,7 +13,7 @@ const VolumeControl = () => {
 				justifyContent: 'center',
 			}}
 		>
-			<div style={{ marginRight: '5px' }}>
+			<div style={{ marginRight: '5px', marginTop: '3px' }}>
 				{isMuted ? <BsVolumeMute size={30} /> : <BsVolumeDown size={30} />}
 			</div>
 			<input

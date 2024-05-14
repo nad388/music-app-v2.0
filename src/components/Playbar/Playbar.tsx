@@ -4,6 +4,7 @@ import { BsFillPlayFill, BsPauseFill } from 'react-icons/bs'
 import { AudioContext } from '../../context/AudioContext'
 import secondsToMMSS from '../../utils/secondsToMMSS'
 import styles from './Playbar.module.scss'
+import RandomPlay from './RandomPlay'
 import VolumeControl from './VolumeControl'
 
 const TimeControls = () => {
@@ -35,6 +36,7 @@ const TimeControls = () => {
 		<>
 			<p>{formattedCurrentTime}</p>
 			<Slider
+				sx={{ width: '350px' }}
 				step={1}
 				min={1}
 				max={100}
@@ -73,6 +75,7 @@ const Playbar: FC = () => {
 				</Stack> */}
 				<VolumeControl />
 			</div>
+			<RandomPlay />
 
 			<div className={styles.slider}>
 				<TimeControls />

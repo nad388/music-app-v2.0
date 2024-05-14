@@ -13,8 +13,10 @@ interface IAudioContext {
 	currentTrack: ITrack | null
 	isPlaying: boolean
 	volume: number
+	isRandomMode: boolean
 	handleToggleAudio: (track: ITrack) => void
 	handleVolumeChange: (newVolume: number) => void
+	toggleRandomMode: () => void // Function to toggle random mode
 }
 
 const audio = new Audio()
@@ -29,6 +31,7 @@ const AudioProvider = ({ children }: PropsWithChildren<{}>) => {
 	const [isPlaying, setIsPlaying] = useState(false)
 	const [isTrackPlaying, setIsTrackPlaying] = useState(false)
 	const [volume, setVolume] = useState(0.5) // Initial volume at 50%
+	const [isRandomMode, setIsRandomMode] = useState(false) // Initial random mode off
 
 	useEffect(() => {
 		const fetchTracks = async () => {
@@ -41,11 +44,18 @@ const AudioProvider = ({ children }: PropsWithChildren<{}>) => {
 
 	useEffect(() => {
 		const handleEnded = () => {
-			const currentIndex = tracksList.findIndex(
-				track => track.id === currentTrack?.id
-			)
-			if (currentIndex !== -1 && currentIndex < tracksList.length - 1) {
-				setCurrentTrack(tracksList[currentIndex + 1])
+			if (!isRandomMode) {
+				const currentIndex = tracksList.findIndex(
+					track => track.id === currentTrack?.id
+				)
+				if (currentIndex !== -1 && currentIndex < tracksList.length - 1) {
+					setCurrentTrack(tracksList[currentIndex + 1])
+					setIsPlaying(true)
+					setIsTrackPlaying(false)
+				}
+			} else {
+				const randomIndex = Math.floor(Math.random() * tracksList.length)
+				setCurrentTrack(tracksList[randomIndex])
 				setIsPlaying(true)
 				setIsTrackPlaying(false)
 			}
@@ -55,7 +65,7 @@ const AudioProvider = ({ children }: PropsWithChildren<{}>) => {
 		return () => {
 			audio.removeEventListener('ended', handleEnded)
 		}
-	}, [currentTrack, tracksList])
+	}, [currentTrack, tracksList, isRandomMode])
 
 	useEffect(() => {
 		if (currentTrack && isPlaying && !isTrackPlaying) {
@@ -91,6 +101,9 @@ const AudioProvider = ({ children }: PropsWithChildren<{}>) => {
 		}
 	}
 
+	const toggleRandomMode = () => {
+		setIsRandomMode(!isRandomMode)
+	}
 
 	const value = {
 		audio,
@@ -99,16 +112,9 @@ const AudioProvider = ({ children }: PropsWithChildren<{}>) => {
 		handleToggleAudio,
 		volume,
 		handleVolumeChange,
-
+		isRandomMode,
+		toggleRandomMode,
 	}
-
-
-
-	return (
-		<AudioContext.Provider value={value}>
-			{children}
-			{/* <VolumeControl onVolumeChange={handleVolumeChange} /> */}
-		</AudioContext.Provider>
-	)
+	return <AudioContext.Provider value={value}>{children}</AudioContext.Provider>
 }
 export default AudioProvider
