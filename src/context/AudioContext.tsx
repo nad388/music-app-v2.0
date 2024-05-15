@@ -37,10 +37,15 @@ const AudioProvider = ({ children }: PropsWithChildren<{}>) => {
 		const fetchTracks = async () => {
 			const response = await fetchTracksFromApi()
 			setTracks(response)
-			setCurrentTrack(response[0])
+			if (!isRandomMode) {
+				setCurrentTrack(response[0])
+			} else {
+				const randomIndex = Math.floor(Math.random() * tracksList.length)
+				setCurrentTrack(response[randomIndex])
+			}
 		}
 		fetchTracks()
-	}, [])
+	}, [isRandomMode])
 
 	useEffect(() => {
 		const handleEnded = () => {
