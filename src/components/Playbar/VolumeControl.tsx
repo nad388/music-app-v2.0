@@ -1,6 +1,8 @@
 import { useContext } from 'react'
 import { BsVolumeDown, BsVolumeMute } from 'react-icons/bs'
 import { AudioContext } from '../../context/AudioContext'
+// import styles from './VolumeControl.module.scss'
+
 
 const VolumeControl = () => {
 	const { volume, handleVolumeChange } = useContext(AudioContext)
@@ -17,6 +19,7 @@ const VolumeControl = () => {
 				{isMuted ? <BsVolumeMute size={30} /> : <BsVolumeDown size={30} />}
 			</div>
 			<input
+				// className={styles.inputRange}
 				style={{ width: '100px' }}
 				type='range'
 				min='0'

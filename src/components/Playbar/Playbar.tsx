@@ -68,11 +68,6 @@ const Playbar: FC = () => {
 				<p>{artists}</p>
 			</div>
 			<div>
-				{/* <Stack spacing={2} direction='row' sx={{ mb: 0 }} alignItems='center'>
-					<BsVolumeDown size={60} />
-					<Slider aria-label='Volume' />
-					<BsVolumeUp size={60} />
-				</Stack> */}
 				<VolumeControl />
 			</div>
 			<RandomPlay />

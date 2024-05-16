@@ -1,5 +1,6 @@
 import { useContext } from 'react'
-import { FaRandom } from 'react-icons/fa'
+
+import { Shuffle } from 'lucide-react'
 import { AudioContext } from '../../context/AudioContext'
 import styles from './RandomPlay.module.scss'
 
@@ -9,12 +10,14 @@ const RandomPlay = () => {
 	const handleRandomModeToggle = () => {
 		toggleRandomMode()
 	}
+
 	return (
-		<div
-			className={`${styles.randomPlay} ${isRandomMode ? styles.active : ''}`}
-			onClick={handleRandomModeToggle}
-		>
-			<FaRandom size={'18px'} color='#9340fe' />
+		<div className={styles.randomPlay} onClick={handleRandomModeToggle}>
+			{isRandomMode ? (
+				<Shuffle size={'20px'} color='#9340fe' />
+			) : (
+				<Shuffle size={'20px'} color='white' />
+			)}
 		</div>
 	)
 }
